@@ -21,6 +21,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Load .env
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+          set -a
+          source .env
+          set +a
+
       - name: Cache Gradle
         if: exists('backend/${{ matrix.service }}/gradlew')
         uses: actions/cache@v3
