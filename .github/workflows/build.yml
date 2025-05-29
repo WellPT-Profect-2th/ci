@@ -69,6 +69,7 @@ jobs:
             else
               echo "No test runner found. Skipping test step."
             fi
+          fi
 
       - name: Build Docker image
         run: |
