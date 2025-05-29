@@ -23,7 +23,7 @@ jobs:
 
       - name: Load .env
         run: |
-          echo "${{ secrets.ENV_FILE }}" > .env
+          echo "${{ secrets.ENV_FILE_BASE64 }}" > .env
           set -a
           source .env
           set +a
