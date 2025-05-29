@@ -28,6 +28,12 @@ jobs:
           source .env
           set +a
 
+      - name: Debug ENV
+        run: |
+          echo ">>> USER_MYSQL_URL=$USER_MYSQL_URL"
+          echo ">>> API_GATEWAY_PORT=$API_GATEWAY_PORT"
+
+
       - name: Cache Gradle
         if: exists('backend/${{ matrix.service }}/gradlew')
         uses: actions/cache@v3
