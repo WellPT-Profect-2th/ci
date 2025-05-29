@@ -118,7 +118,7 @@ jobs:
 
           SERVICE_NAME="${{ matrix.service }}"
           TAG="${{ steps.set-tag.outputs.tag }}"
-          REPO="wellpt-org/ci"
+          REPO="WellPT-Profect-2th/ci"
           RUN_ID="${{ github.run_id }}"
           LOG_URL="https://github.com/$REPO/actions/runs/$RUN_ID"
 
