@@ -3,8 +3,6 @@ name: CI Build and Push
 on:
   dispatch:
     types: [trigger-ci]
-  release:
-    types: [published]
 
 jobs:
   build:
@@ -50,14 +48,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
 
-      - name: Set tag name (SHA or Release Tag)
+      - name: Set tag name
         id: set-tag
         run: |
-          if [ "${{ github.event_name }}" == "release" ]; then
-            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "tag=${{ github.event.client_payload.sha }}" >> $GITHUB_OUTPUT
-          fi
+          echo "tag=${{ github.event.client_payload.sha }}" >> $GITHUB_OUTPUT
 
       - name: Run tests / build
         run: |
