@@ -9,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: ${{ fromJson(github.event.client_payload.services || '["user", "product", "gateway", "review", "chatbot", "ad", "frontend"]') }}
+        service: ${{ fromJson(github.event.client_payload.services) }}
 
     steps:
       - name: Checkout dev repo
         uses: actions/checkout@v3
         with:
-          repository: wellpt-org/dev
+          repository: WellPT-Profect-2th/dev
           token: ${{ secrets.DEV_REPO_PAT }}
 
       - name: Set up Docker Buildx
