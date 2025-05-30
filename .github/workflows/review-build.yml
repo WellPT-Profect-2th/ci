@@ -36,7 +36,12 @@ jobs:
           cd ./backend/${{ inputs.service }}
           pip install -r requirements.txt
           pip install pytest
-          PYTHONPATH=backend/Review pytest
+
+          for d in ai consumer exceptions models routers services tests utils; do
+            touch "$d/__init__.py"
+          done
+
+          PYTHONPATH=. pytest
 
   build_and_push:
     runs-on: ubuntu-latest
