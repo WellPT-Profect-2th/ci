@@ -43,6 +43,7 @@ jobs:
       - name: Export environment variables to .env and GitHub env
         run: |
           echo $API_GATEWAY_ENV >> $GITHUB_ENV
+          echo $API_GATEWAY_ENV >> .env
 
       - name: Run tests / build
         run: |
