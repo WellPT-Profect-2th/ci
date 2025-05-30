@@ -27,11 +27,11 @@ jobs:
 
       - name: Load .env
         run: |
-          echo TEST_ENV_FILE="${{ secrets.TEST_ENV_FILE }}" > .env
+          echo NEXT_SERVER="${{ secrets.NEXT_SERVER }}" > .env
           set -a
           source .env
           set +a
-          echo ">>> TEST_ENV_FILE=$TEST_ENV_FILE"
+          echo ">>> NEXT_SERVER=$NEXT_SERVER"
 
       # - name: Set tag name
       #   id: set-tag
