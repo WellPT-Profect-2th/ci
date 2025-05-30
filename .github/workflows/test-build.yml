@@ -16,18 +16,19 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      API_GATEWAY_PORT: ${{ vars.API_GATEWAY_PORT }}
-      NEXT_SERVER: ${{ vars.NEXT_SERVER }}
-      USER_SERVER_ADDR: ${{ vars.USER_SERVER_ADDR }}
-      USER_SERVER_PORT: ${{ vars.USER_SERVER_PORT }}
-      AD_SERVER_ADDR: ${{ vars.AD_SERVER_ADDR }}
-      AD_SERVER_PORT: ${{ vars.AD_SERVER_PORT }}
-      PRODUCT_SERVER_ADDR: ${{ vars.PRODUCT_SERVER_ADDR }}
-      PRODUCT_SERVER_PORT: ${{ vars.PRODUCT_SERVER_PORT }}
-      REVIEW_SERVER_ADDR: ${{ vars.REVIEW_SERVER_ADDR }}
-      REVIEW_SERVER_PORT: ${{ vars.REVIEW_SERVER_PORT }}
-      CHATBOT_SERVER_ADDR: ${{ vars.CHATBOT_SERVER_ADDR }}
-      CHATBOT_SERVER_PORT: ${{ vars.CHATBOT_SERVER_PORT }}
+      API_GATEWAY_ENV: ${{ vars.API_GATEWAY_ENV }}
+      # API_GATEWAY_PORT: ${{ vars.API_GATEWAY_PORT }}
+      # NEXT_SERVER: ${{ vars.NEXT_SERVER }}
+      # USER_SERVER_ADDR: ${{ vars.USER_SERVER_ADDR }}
+      # USER_SERVER_PORT: ${{ vars.USER_SERVER_PORT }}
+      # AD_SERVER_ADDR: ${{ vars.AD_SERVER_ADDR }}
+      # AD_SERVER_PORT: ${{ vars.AD_SERVER_PORT }}
+      # PRODUCT_SERVER_ADDR: ${{ vars.PRODUCT_SERVER_ADDR }}
+      # PRODUCT_SERVER_PORT: ${{ vars.PRODUCT_SERVER_PORT }}
+      # REVIEW_SERVER_ADDR: ${{ vars.REVIEW_SERVER_ADDR }}
+      # REVIEW_SERVER_PORT: ${{ vars.REVIEW_SERVER_PORT }}
+      # CHATBOT_SERVER_ADDR: ${{ vars.CHATBOT_SERVER_ADDR }}
+      # CHATBOT_SERVER_PORT: ${{ vars.CHATBOT_SERVER_PORT }}
 
     steps:
       - name: Checkout dev repo
@@ -41,20 +42,7 @@ jobs:
 
       - name: Export environment variables to .env and GitHub env
         run: |
-          {
-            echo "API_GATEWAY_PORT=$API_GATEWAY_PORT"
-            echo "NEXT_SERVER=$NEXT_SERVER"
-            echo "USER_SERVER_ADDR=$USER_SERVER_ADDR"
-            echo "USER_SERVER_PORT=$USER_SERVER_PORT"
-            echo "AD_SERVER_ADDR=$AD_SERVER_ADDR"
-            echo "AD_SERVER_PORT=$AD_SERVER_PORT"
-            echo "PRODUCT_SERVER_ADDR=$PRODUCT_SERVER_ADDR"
-            echo "PRODUCT_SERVER_PORT=$PRODUCT_SERVER_PORT"
-            echo "REVIEW_SERVER_ADDR=$REVIEW_SERVER_ADDR"
-            echo "REVIEW_SERVER_PORT=$REVIEW_SERVER_PORT"
-            echo "CHATBOT_SERVER_ADDR=$CHATBOT_SERVER_ADDR"
-            echo "CHATBOT_SERVER_PORT=$CHATBOT_SERVER_PORT"
-          } | tee -a .env >> $GITHUB_ENV
+          echo $API_GATEWAY_ENV >> .env
 
       - name: Run tests / build
         run: |
