@@ -37,7 +37,12 @@ jobs:
           cd ./backend/${{ inputs.service }}
           pip install -r requirements.txt
           pip install pytest
-          pytest
+          
+          for d in exception models routers services tests; do
+            touch "$d/__init__.py"
+          done
+
+          PYTHONPATH=. pytest
 
   build_and_push:
     runs-on: ubuntu-latest
