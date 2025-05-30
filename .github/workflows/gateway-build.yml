@@ -1,0 +1,74 @@
+name: Gateway CI Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: '서비스 이름'
+        required: true
+        default: 'gateway'
+      sha:
+        description: '빌드할 커밋 SHA'
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3
+        with:
+          repository: WellPT-Profect-2th/dev
+          token: ${{ secrets.DEV_REPO_PAT }}
+
+      - name: Set environment variables
+        run: |
+          {
+            echo "API_GATEWAY_PORT=${{ vars.API_GATEWAY_PORT }}"
+            echo "NEXT_SERVER=${{ vars.NEXT_SERVER }}"
+            echo "USER_SERVER_ADDR=${{ vars.USER_SERVER_ADDR }}"
+            echo "USER_SERVER_PORT=${{ vars.USER_SERVER_PORT }}"
+            echo "AD_SERVER_ADDR=${{ vars.AD_SERVER_ADDR }}"
+            echo "AD_SERVER_PORT=${{ vars.AD_SERVER_PORT }}"
+            echo "PRODUCT_SERVER_ADDR=${{ vars.PRODUCT_SERVER_ADDR }}"
+            echo "PRODUCT_SERVER_PORT=${{ vars.PRODUCT_SERVER_PORT }}"
+            echo "REVIEW_SERVER_ADDR=${{ vars.REVIEW_SERVER_ADDR }}"
+            echo "REVIEW_SERVER_PORT=${{ vars.REVIEW_SERVER_PORT }}"
+            echo "CHATBOT_SERVER_ADDR=${{ vars.CHATBOT_SERVER_ADDR }}"
+            echo "CHATBOT_SERVER_PORT=${{ vars.CHATBOT_SERVER_PORT }}"
+          } | tee -a .env >> $GITHUB_ENV
+
+      - name: Run tests
+        run: |
+          cd ./backend/gateway
+          ./gradlew test
+
+  build and push:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3
+        with:
+          repository: WellPT-Profect-2th/dev
+          token: ${{ secrets.DEV_REPO_PAT }}
+
+      - name: Docker build
+        id: set-tag
+        run: |
+          TAG=${{ inputs.sha }}
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+          docker build -t ghcr.io/${{ github.repository_owner }}/gateway:$TAG backend/gateway
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/gateway:$TAG
