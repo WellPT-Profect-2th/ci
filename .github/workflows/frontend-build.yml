@@ -1,4 +1,4 @@
-name: AD CI Build
+name: Frontend CI Build
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       service:
         description: '서비스 이름'
         required: true
-        default: 'ad'
+        default: 'frontend'
       sha:
         description: '빌드할 커밋 SHA'
         required: true
@@ -25,15 +25,18 @@ jobs:
       - name: Set environment variables
         run: |
           {
-            echo "AD_DB_URL=${{ vars.AD_DB_URL }}"
-            echo "AD_DB_USER=${{ vars.AD_DB_USER }}"
-            echo "AD_DB_PASSWORD=${{ vars.AD_DB_PASSWORD }}"
-            echo "PRODUCT_BASE_URL=${{ vars.PRODUCT_BASE_URL }}"
+            echo "NEXT_PUBLIC_KAKAO_REST_API_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_REST_API_KEY }}"
+            echo "NEXT_PUBLIC_NAVER_CLIENT_ID=${{ secrets.NEXT_PUBLIC_NAVER_CLIENT_ID }}"
+            echo "NEXT_PUBLIC_NAVER_CLIENT_SECRET=${{ secrets.NEXT_PUBLIC_NAVER_CLIENT_SECRET }}"
+            echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}"
+            echo "NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET }}"
+            echo "NEXT_PUBLIC_SOCIAL_REDIRECT_URI=${{ vars.NEXT_PUBLIC_SOCIAL_REDIRECT_URI }}"
+            echo "NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}"
           } | tee -a .env >> $GITHUB_ENV
 
       - name: Run tests
         run: |
-          cd ./backend/${{ inputs.service }}
+          cd ./${{ inputs.service }}
           ./gradlew test
 
   build_and_push:
@@ -52,7 +55,7 @@ jobs:
         run: |
           TAG=${{ inputs.sha }}
           echo "tag=$TAG" >> $GITHUB_OUTPUT
-          docker build -t ghcr.io/wellpt-profect-2th/${{ inputs.service }}:$TAG backend/${{ inputs.service }}
+          docker build -t ghcr.io/wellpt-profect-2th/${{ inputs.service }}:$TAG ${{ inputs.service }}
 
       - name: Log in to GHCR
         uses: docker/login-action@v2

@@ -59,7 +59,7 @@ jobs:
         id: set-tag
         run: |
           TAG=${{ inputs.sha }}
-          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
           docker build -t ghcr.io/wellpt-profect-2th/${{ inputs.service }}:$TAG backend/${{ inputs.service }}
 
       - name: Log in to GHCR
@@ -71,4 +71,4 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/wellpt-profect-2th/${{ inputs.service }}:$TAG
+          docker push ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ steps.set-tag.outputs.tag }}
