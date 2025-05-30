@@ -35,6 +35,7 @@ jobs:
         run: |
           cd ./backend/${{ inputs.service }}
           pip install -r requirements.txt
+          pip install pytest
           pytest
 
   build_and_push:
