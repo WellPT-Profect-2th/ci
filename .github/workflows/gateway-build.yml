@@ -44,7 +44,7 @@ jobs:
           cd ./backend/gateway
           ./gradlew test
 
-  build and push:
+  build_and_push:
     runs-on: ubuntu-latest
     needs: test
 
