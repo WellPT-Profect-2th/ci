@@ -3,11 +3,19 @@ name: Triggered CI for gateway test
 on:
   workflow_dispatch:
     inputs:
-      service: 'gateway'
-      sha: 'test'
+      service:
+        description: '서비스 이름'
+        required: true
+        default: 'gateway'
+      sha:
+        description: '빌드할 커밋 SHA'
+        required: true
+        default: 'test'
 
 jobs:
-  matrix-dispatch:
+  dispatch:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Dispatch CI workflow for gateway
         uses: benc-uk/workflow-dispatch@v1
