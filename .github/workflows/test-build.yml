@@ -1,21 +1,22 @@
 name: Triggered CI for gateway test
 
+on:
+  workflow_dispatch:
+    inputs:
+      service: 'gateway'
+      sha: 'test'
+
 jobs:
   matrix-dispatch:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: 'gateway'
-
     steps:
       - name: Dispatch CI workflow for gateway
         uses: benc-uk/workflow-dispatch@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repo: WellPT-Profect-2th/ci
-          workflow: ${{ matrix.service }}-build.yml
+          workflow: ${{ inputs.service }}-build.yml
           inputs: |
             {
-              "service": "${{ matrix.service }}",
-              "sha": "test"
+              "service": "${{ inputs.service }}",
+              "sha": "${{ inputs.sha }}"
             }
