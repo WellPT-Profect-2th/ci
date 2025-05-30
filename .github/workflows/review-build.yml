@@ -1,4 +1,4 @@
-name: Frontend CI Build
+name: Review CI Build
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       service:
         description: '서비스 이름'
         required: true
-        default: 'frontend'
+        default: 'review'
       sha:
         description: '빌드할 커밋 SHA'
         required: true
@@ -25,24 +25,17 @@ jobs:
       - name: Set environment variables
         run: |
           {
-            echo "NEXT_PUBLIC_KAKAO_REST_API_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_REST_API_KEY }}"
-            echo "NEXT_PUBLIC_NAVER_CLIENT_ID=${{ secrets.NEXT_PUBLIC_NAVER_CLIENT_ID }}"
-            echo "NEXT_PUBLIC_NAVER_CLIENT_SECRET=${{ secrets.NEXT_PUBLIC_NAVER_CLIENT_SECRET }}"
-            echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}"
-            echo "NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET }}"
-            echo "NEXT_PUBLIC_SOCIAL_REDIRECT_URI=${{ vars.NEXT_PUBLIC_SOCIAL_REDIRECT_URI }}"
-            echo "NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}"
+            echo "REVIEW_DATABASE_URL=${{ vars.REVIEW_DATABASE_URL }}"
+            echo "REVIEW_MYSQL_ROOT_PASSWORD=${{ vars.REVIEW_MYSQL_ROOT_PASSWORD }}"
+            echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}"
+            echo "KAFKA_BOOTSTRAP_SERVERS=${{ vars.KAFKA_BOOTSTRAP_SERVERS }}"
           } | tee -a .env >> $GITHUB_ENV
 
-      - name: Install dependencies
+      - name: Run tests
         run: |
-          cd ./${{ inputs.service }}
-          npm ci
-
-      - name: Run tests (Jest)
-        run: |
-          cd ./${{ inputs.service }}
-          npm test -- --ci --coverage
+          cd ./backend/${{ inputs.service }}
+          pip install -r requirements.txt
+          pytest
 
   build_and_push:
     runs-on: ubuntu-latest
@@ -60,7 +53,7 @@ jobs:
         run: |
           TAG=${{ inputs.sha }}
           echo "tag=$TAG" >> $GITHUB_OUTPUT
-          docker build -t ghcr.io/wellpt-profect-2th/${{ inputs.service }}:$TAG ${{ inputs.service }}
+          docker build -t ghcr.io/wellpt-profect-2th/${{ inputs.service }}:$TAG backend/${{ inputs.service }}
 
       - name: Log in to GHCR
         uses: docker/login-action@v2
@@ -72,4 +65,3 @@ jobs:
       - name: Push Docker image
         run: |
           docker push ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ steps.set-tag.outputs.tag }}
-          
