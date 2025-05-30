@@ -27,7 +27,7 @@ jobs:
 
       - name: Load .env
         run: |
-          printf "%s" "${{ secrets.TEST_ENV_FILE }}" > .env
+          echo TEST_ENV_FILE="${{ secrets.TEST_ENV_FILE }}" > .env
           set -a
           source .env
           set +a
