@@ -31,6 +31,7 @@ jobs:
           set -a
           source .env
           set +a
+          echo ">>> TEST_ENV_FILE=$TEST_ENV_FILE"
 
       # - name: Set tag name
       #   id: set-tag
