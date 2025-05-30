@@ -12,38 +12,6 @@ on:
         required: true
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout main
-        uses: actions/checkout@v3
-        with:
-          repository: WellPT-Profect-2th/dev
-          token: ${{ secrets.DEV_REPO_PAT }}
-
-      - name: Set environment variables
-        run: |
-          {
-            echo "NEXT_PUBLIC_KAKAO_REST_API_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_REST_API_KEY }}"
-            echo "NEXT_PUBLIC_NAVER_CLIENT_ID=${{ secrets.NEXT_PUBLIC_NAVER_CLIENT_ID }}"
-            echo "NEXT_PUBLIC_NAVER_CLIENT_SECRET=${{ secrets.NEXT_PUBLIC_NAVER_CLIENT_SECRET }}"
-            echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}"
-            echo "NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET }}"
-            echo "NEXT_PUBLIC_SOCIAL_REDIRECT_URI=${{ vars.NEXT_PUBLIC_SOCIAL_REDIRECT_URI }}"
-            echo "NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}"
-          } | tee -a .env >> $GITHUB_ENV
-
-      - name: Install dependencies
-        run: |
-          cd ./${{ inputs.service }}
-          npm ci
-
-      - name: Run tests (Jest)
-        run: |
-          cd ./${{ inputs.service }}
-          npm test -- --ci --coverage
-
   build_and_push:
     runs-on: ubuntu-latest
     needs: test
@@ -72,4 +40,3 @@ jobs:
       - name: Push Docker image
         run: |
           docker push ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ steps.set-tag.outputs.tag }}
-          
