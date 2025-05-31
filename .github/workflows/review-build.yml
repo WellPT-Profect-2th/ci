@@ -45,7 +45,7 @@ jobs:
 
   build_and_release:
     needs: test
-    uses: ./.github/workflows/build-and-release.yaml
+    uses: ./.github/workflows/build-and-release.yml
     with:
       service: ${{ inputs.service }}
       sha: ${{ inputs.sha }}
