@@ -38,6 +38,7 @@ jobs:
           docker push ghcr.io/wellpt-profect-2th/${{ inputs.service }}:latest
 
   update_tag_in_ops:
+    needs: build_and_push
     runs-on: ubuntu-latest 
     steps:
       - name: Install yq
