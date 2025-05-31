@@ -49,3 +49,7 @@ jobs:
     with:
       service: ${{ inputs.service }}
       sha: ${{ inputs.sha }}
+    secrets:
+      DEV_REPO_PAT: ${{ secrets.DEV_REPO_PAT }}
+      OPS_REPO_PAT: ${{ secrets.OPS_REPO_PAT }}
+      GHCR_PAT: ${{ secrets.GHCR_PAT }}      

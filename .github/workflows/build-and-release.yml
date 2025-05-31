@@ -9,6 +9,13 @@ on:
       sha:
         required: true
         type: string
+    secrets:
+      DEV_REPO_PAT:
+        required: true
+      OPS_REPO_PAT:
+        required: true
+      GHCR_PAT:
+        required: true
 
 jobs:  
   build_and_push:
