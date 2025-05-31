@@ -1,4 +1,4 @@
-name: AD CI Build
+name: AD Test CI
 
 on:
   workflow_dispatch:

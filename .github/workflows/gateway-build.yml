@@ -1,4 +1,4 @@
-name: Gateway CI Build
+name: Gateway Test CI
 
 on:
   workflow_dispatch:

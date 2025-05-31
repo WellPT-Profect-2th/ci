@@ -1,4 +1,4 @@
-name: User CI Build
+name: User Test CI
 
 on:
   workflow_dispatch:
