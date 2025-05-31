@@ -29,7 +29,13 @@ jobs:
 
       - name: Docker build
         run: |
-          docker build -t ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ inputs.sha }} backend/${{ inputs.service }}
+          if [ "${{ inputs.service }}" = "frontend" ]; then
+            BUILD_PATH="frontend"
+          else
+            BUILD_PATH="backend/${{ inputs.service }}"
+          fi
+
+          docker build -t ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ inputs.sha }} $BUILD_PATH
           docker tag ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ inputs.sha }} ghcr.io/wellpt-profect-2th/${{ inputs.service }}:latest
 
       - name: Log in to GHCR
