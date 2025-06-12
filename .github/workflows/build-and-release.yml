@@ -58,7 +58,7 @@ jobs:
               --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ vars.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
               --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET }}
               --build-arg NEXT_PUBLIC_SOCIAL_REDIRECT_URI=${{ vars.NEXT_PUBLIC_SOCIAL_REDIRECT_URI }}
-              --build-arg NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
+              --build-arg API_URL=${{ vars.API_URL }}
             "
           else
             BUILD_PATH="backend/${{ inputs.service }}"
