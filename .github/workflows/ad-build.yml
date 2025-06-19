@@ -1,4 +1,4 @@
-name: AD Test CI
+name: AD CI
 
 on:
   workflow_dispatch:

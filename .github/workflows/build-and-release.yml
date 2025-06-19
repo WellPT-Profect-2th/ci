@@ -68,7 +68,7 @@ jobs:
           echo "Building $BUILD_PATH for Multi-arch platforms"
 
           docker buildx build \
-            --platform linux/amd64,linux/arm64 \
+            --platform linux/amd64 \
             --tag ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ inputs.sha }} \
             --tag ghcr.io/wellpt-profect-2th/${{ inputs.service }}:latest \
             --push \
@@ -92,15 +92,15 @@ jobs:
           sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
           sudo chmod +x /usr/bin/yq
 
-      - name: Update image tag in kustomization.yaml
+      - name: Update image tag in values.yaml
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
 
           git clone https://x-access-token:${{ secrets.OPS_REPO_PAT }}@github.com/WellPT-Profect-2th/ops.git
-          cd ops/${{ inputs.service }}
+          cd ops/services/${{ inputs.service }}
 
-          yq eval ".images[0].newTag = \"${{ inputs.sha }}\"" -i kustomization.yaml
+          yq eval ".image.tag = \"${{ inputs.sha }}\"" -i values.yaml
 
           git add kustomization.yaml
           git commit -m "ci: update ${{ inputs.service }} image tag to ${{ inputs.sha }}"

@@ -1,4 +1,4 @@
-name: Chatbot Test CI
+name: Chatbot CI
 
 on:
   workflow_dispatch:

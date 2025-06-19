@@ -1,4 +1,4 @@
-name: Review Test CI
+name: Review CI
 
 on:
   workflow_dispatch:
