@@ -37,6 +37,8 @@ jobs:
             echo "REVIEW_SERVER_PORT=${{ vars.REVIEW_SERVER_PORT }}"
             echo "CHATBOT_SERVER_ADDR=${{ vars.CHATBOT_SERVER_ADDR }}"
             echo "CHATBOT_SERVER_PORT=${{ vars.CHATBOT_SERVER_PORT }}"
+            echo "RECOMMEND_SERVER_ADDR=${{ vars.RECOMMEND_SERVER_ADDR }}"
+            echo "RECOMMEND_SERVER_PORT=${{ vars.RECOMMEND_SERVER_PORT }}"
           } | tee -a .env >> $GITHUB_ENV
 
       - name: Run tests
