@@ -1,0 +1,23 @@
+name: BentoML CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: '서비스 이름'
+        required: true
+        default: 'frontend'
+      sha:
+        description: '빌드할 커밋 SHA'
+        required: true
+
+jobs:
+  build_and_release:
+    uses: ./.github/workflows/build-and-release.yml
+    with:
+      service: ${{ inputs.service }}
+      sha: ${{ inputs.sha }}
+    secrets:
+      DEV_REPO_PAT: ${{ secrets.DEV_REPO_PAT }}
+      OPS_REPO_PAT: ${{ secrets.OPS_REPO_PAT }}
+      GHCR_PAT: ${{ secrets.GHCR_PAT }}
