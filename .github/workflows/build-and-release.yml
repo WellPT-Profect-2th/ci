@@ -65,7 +65,7 @@ jobs:
             BUILD_ARGS=""
           fi
 
-          echo "Building $BUILD_PATH for Multi-arch platforms"
+          echo "Building $BUILD_PATH"
 
           docker buildx build \
             --platform linux/amd64 \
