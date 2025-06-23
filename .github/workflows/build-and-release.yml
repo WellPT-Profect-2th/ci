@@ -72,11 +72,11 @@ jobs:
             --tag ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ inputs.sha }} \
             --tag ghcr.io/wellpt-profect-2th/${{ inputs.service }}:latest \
             --push \
-            # --cache-from type=local,src=/tmp/.buildx-cache \
-            # --cache-to type=local,dest=/tmp/.buildx-cache-new \
             $BUILD_ARGS \
             $BUILD_PATH
 
+      # --cache-from type=local,src=/tmp/.buildx-cache \
+      # --cache-to type=local,dest=/tmp/.buildx-cache-new \
       # - name: Move new cache into place
       #   run: |
       #     rm -rf /tmp/.buildx-cache
