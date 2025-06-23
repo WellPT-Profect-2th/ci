@@ -34,11 +34,11 @@ jobs:
           buildkitd-flags: --debug
           install: true
 
-      # - name: Cache Docker layers
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: ${{ runner.os }}-buildx-${{ inputs.service }}-latest
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ inputs.service }}-latest
 
       - name: Log in to GHCR
         uses: docker/login-action@v2
@@ -71,16 +71,16 @@ jobs:
             --platform linux/amd64 \
             --tag ghcr.io/wellpt-profect-2th/${{ inputs.service }}:${{ inputs.sha }} \
             --tag ghcr.io/wellpt-profect-2th/${{ inputs.service }}:latest \
+            --cache-from type=local,src=/tmp/.buildx-cache \
+            --cache-to type=local,dest=/tmp/.buildx-cache-new \
             --push \
             $BUILD_ARGS \
             $BUILD_PATH
 
-      # --cache-from type=local,src=/tmp/.buildx-cache \
-      # --cache-to type=local,dest=/tmp/.buildx-cache-new \
-      # - name: Move new cache into place
-      #   run: |
-      #     rm -rf /tmp/.buildx-cache
-      #     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      - name: Move new cache into place
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   update_tag_in_ops:
     needs: build_and_push
